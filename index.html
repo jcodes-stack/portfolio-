@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JINO JACOB SKARIAH — Motion & Reels</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-deep:#1a1420;
+    --bg-black:#0d0a0f;
+    --cream:#f2e9dc;
+    --cream-dim:#c9beae;
+    --gold:#e8a33d;
+    --teal:#3e7c74;
+    --line: rgba(242,233,220,0.14);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg-deep);
+    color:var(--cream);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+  }
+
+  /* ---------- animated background ---------- */
+  #grain-canvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:0;
+    opacity:0.06;
+    pointer-events:none;
+  }
+
+  .light-leak{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(ellipse 60% 40% at 15% 20%, rgba(232,163,61,0.16), transparent 60%),
+      radial-gradient(ellipse 50% 35% at 85% 75%, rgba(62,124,116,0.16), transparent 60%);
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+
+  @keyframes drift{
+    0%{ transform: translate(0,0) scale(1); }
+    100%{ transform: translate(-2%, 3%) scale(1.08); }
+  }
+
+  .vignette{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    box-shadow: inset 0 0 18vw 4vw rgba(13,10,15,0.85);
+  }
+
+  /* ---------- sprocket rail ---------- */
+  .sprocket-rail{
+    position:fixed;
+    top:0;
+    bottom:0;
+    left:0;
+    width:34px;
+    z-index:5;
+    background:var(--bg-black);
+    border-right:1px solid var(--line);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:space-evenly;
+    padding:24px 0;
+  }
+  .sprocket-rail.right{ left:auto; right:0; border-right:none; border-left:1px solid var(--line); }
+  .hole{
+    width:12px; height:12px;
+    border-radius:3px;
+    background:var(--bg-deep);
+    border:1px solid var(--line);
+    flex-shrink:0;
+  }
+  @media (max-width:768px){ .sprocket-rail{ display:none; } }
+
+  main{ position:relative; z-index:2; margin:0 34px; }
+  @media (max-width:768px){ main{ margin:0; } }
+
+  section{ padding:8vh 8vw; }
+  @media (max-width:768px){ section{ padding:10vh 6vw; } }
+
+  /* ---------- nav ---------- */
+  nav{
+    position:relative; z-index:10;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:28px 8vw 0;
+  }
+  .nav-mark{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700; font-size:15px; letter-spacing:0.08em;
+    color:var(--cream);
+  }
+  .nav-mark span{ color:var(--gold); }
+  .nav-links{ display:flex; gap:32px; list-style:none; }
+  .nav-links a{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:13px; letter-spacing:0.06em; text-transform:uppercase;
+    color:var(--cream-dim); text-decoration:none;
+    transition:color .25s ease;
+  }
+  .nav-links a:hover, .nav-links a:focus-visible{ color:var(--gold); }
+  @media (max-width:640px){ .nav-links{ display:none; } }
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:88vh;
+    display:flex; flex-direction:column; justify-content:center;
+    position:relative;
+  }
+  .eyebrow{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:13px; letter-spacing:0.22em; text-transform:uppercase;
+    color:var(--gold);
+    display:flex; align-items:center; gap:12px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{
+    content:''; width:34px; height:1px; background:var(--gold);
+  }
+  h1.title{
+    font-family:'Bebas Neue', sans-serif;
+    font-weight:400;
+    font-size:clamp(3.4rem, 11vw, 9rem);
+    line-height:0.88;
+    letter-spacing:0.01em;
+    color:var(--cream);
+  }
+  h1.title .out{ color:transparent; -webkit-text-stroke:1.5px var(--cream-dim); }
+  .hero-sub{
+    max-width:520px;
+    margin-top:28px;
+    font-size:17px;
+    line-height:1.6;
+    color:var(--cream-dim);
+  }
+  .hero-meta{
+    margin-top:48px;
+    display:flex; gap:40px; flex-wrap:wrap;
+  }
+  .meta-item .num{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:2.2rem; color:var(--gold); line-height:1;
+  }
+  .meta-item .lbl{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--cream-dim); margin-top:6px;
+  }
+
+  .scroll-cue{
+    position:absolute; bottom:0; right:0;
+    writing-mode:vertical-rl;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:11px; letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--cream-dim);
+    display:flex; align-items:center; gap:10px;
+  }
+  .scroll-cue::after{
+    content:''; width:1px; height:44px; background:var(--cream-dim);
+    animation:pulse-line 2s ease-in-out infinite;
+  }
+  @keyframes pulse-line{ 0%,100%{opacity:.3} 50%{opacity:1} }
+
+  /* ---------- corner mark (hero top-right) ---------- */
+  .corner-mark{
+    position:absolute;
+    top:-4px; right:0;
+    display:flex; align-items:center; gap:10px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:11px; letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--cream-dim);
+  }
+  @media (max-width:768px){ .corner-mark{ display:none; } }
+  .corner-mark .ring{
+    width:34px; height:34px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    border-top-color:var(--gold);
+    animation:spin 6s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+
+  /* ---------- section headers ---------- */
+  .sec-head{
+    display:flex; align-items:baseline; justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    padding-bottom:20px; margin-bottom:48px;
+    flex-wrap:wrap; gap:12px;
+  }
+  .sec-head h2{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:clamp(2.2rem,5vw,3.6rem);
+    letter-spacing:0.01em;
+  }
+  .sec-head .tag{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:12px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--gold);
+  }
+
+  /* ---------- reels ---------- */
+  .reel-strip{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(240px, 1fr));
+    gap:20px;
+  }
+  .reel-card{
+    position:relative;
+    aspect-ratio:9/14;
+    border-radius:6px;
+    overflow:hidden;
+    background:linear-gradient(160deg, var(--reel-a,#3e7c74), var(--reel-b,#1a1420));
+    cursor:pointer;
+    border:1px solid var(--line);
+    isolation:isolate;
+  }
+  .reel-card video{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    object-fit:cover;
+    z-index:0;
+  }
+  .reel-card::before{
+    content:'';
+    position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.18) 0 2px, transparent 2px 4px);
+    mix-blend-mode:multiply;
+    opacity:.5;
+  }
+  .reel-frame{
+    position:absolute; top:10px; left:10px; right:10px; bottom:10px;
+    border:1px solid rgba(242,233,220,0.35);
+    border-radius:3px;
+    pointer-events:none;
+  }
+  .reel-info{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:16px 14px;
+    background:linear-gradient(0deg, rgba(13,10,15,0.92), transparent);
+  }
+  .reel-info .reel-title{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600; font-size:15px; color:var(--cream);
+  }
+  .reel-info .reel-cat{
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--gold); margin-top:4px;
+  }
+  .play-btn{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-50%) scale(1);
+    width:52px; height:52px; border-radius:50%;
+    background:rgba(13,10,15,0.55);
+    border:1px solid rgba(242,233,220,0.5);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .3s ease, background .3s ease;
+  }
+  .play-btn svg{ width:16px; height:16px; fill:var(--cream); margin-left:2px; }
+  .reel-card:hover .play-btn{ transform:translate(-50%,-50%) scale(1.15); background:var(--gold); }
+  .reel-card:hover .play-btn svg{ fill:var(--bg-black); }
+  .reel-card:hover{ border-color:var(--gold); }
+  .reel-card{ transition:transform .35s ease; }
+  .reel-card:hover{ transform:translateY(-6px); }
+  .reel-card.landscape{
+    grid-column:1 / -1;
+    aspect-ratio:16/9;
+    background:linear-gradient(160deg, #2a2434, var(--bg-black));
+  }
+  @media (min-width:900px){
+    .reel-card.landscape{ grid-column:span 2; }
+  }
+  .reel-num{
+    position:absolute; top:12px; right:14px; z-index:2;
+    font-family:'Bebas Neue', sans-serif;
+    font-size:13px; color:rgba(242,233,220,0.65);
+  }
+
+  /* ---------- experience timeline ---------- */
+  .timeline{ position:relative; }
+  .timeline::before{
+    content:'';
+    position:absolute; left:120px; top:0; bottom:0; width:1px;
+    background:var(--line);
+  }
+  @media (max-width:640px){ .timeline::before{ left:20px; } }
+
+  .t-row{
+    display:grid;
+    grid-template-columns:120px 1fr;
+    gap:32px;
+    position:relative;
+    padding:32px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .t-row:last-child{ border-bottom:none; }
+  @media (max-width:640px){ .t-row{ grid-template-columns:20px 1fr; gap:20px; } .t-row .t-year{ display:none; } }
+
+  .t-year{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:13px; letter-spacing:0.05em; color:var(--gold);
+    padding-top:4px;
+  }
+  .t-dot{
+    position:absolute; left:116px; top:38px;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--gold);
+    box-shadow:0 0 0 4px var(--bg-deep);
+  }
+  @media (max-width:640px){ .t-dot{ left:16px; } }
+
+  .t-role{
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:600; font-size:20px; color:var(--cream);
+  }
+  .t-org{ color:var(--gold); font-weight:500; }
+  .t-desc{
+    margin-top:10px; color:var(--cream-dim); line-height:1.65;
+    max-width:640px; font-size:15px;
+  }
+  .t-tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+  .t-tags span{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:11px; letter-spacing:0.05em; text-transform:uppercase;
+    color:var(--cream-dim);
+    border:1px solid var(--line);
+    padding:5px 10px; border-radius:20px;
+  }
+
+  /* ---------- toolkit ---------- */
+  .tool-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(120px, 1fr));
+    gap:24px;
+  }
+  .tool-card{
+    display:flex; flex-direction:column; align-items:center; gap:12px;
+    padding:20px 10px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    transition:transform .3s ease, border-color .3s ease;
+  }
+  .tool-card:hover{ transform:translateY(-4px); border-color:var(--gold); }
+  .tool-badge{
+    width:56px; height:56px;
+    border-radius:12px;
+    background:var(--badge, var(--teal));
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Grotesk', sans-serif;
+    font-weight:700; font-size:18px;
+    color:var(--cream);
+    box-shadow:0 4px 14px rgba(0,0,0,0.35);
+  }
+  .tool-name{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:12px; letter-spacing:0.04em;
+    color:var(--cream-dim);
+    text-align:center;
+  }
+
+  /* ---------- contact ---------- */
+  .contact{ text-align:center; padding-bottom:14vh; }
+  .contact h2{
+    font-family:'Bebas Neue', sans-serif;
+    font-size:clamp(2.6rem,8vw,6rem);
+    line-height:0.95;
+  }
+  .contact h2 .accent{ color:var(--gold); }
+  .contact-sub{ color:var(--cream-dim); margin-top:18px; font-size:16px; }
+  .cta-row{ display:flex; gap:16px; justify-content:center; margin-top:36px; flex-wrap:wrap; }
+  .btn{
+    font-family:'Space Grotesk', sans-serif;
+    font-size:13px; letter-spacing:0.06em; text-transform:uppercase;
+    padding:15px 30px; border-radius:30px;
+    text-decoration:none;
+    transition:transform .25s ease, background .25s ease, color .25s ease;
+  }
+  .btn-primary{ background:var(--gold); color:var(--bg-black); font-weight:600; }
+  .btn-primary:hover{ transform:translateY(-2px); }
+  .btn-ghost{ border:1px solid var(--line); color:var(--cream); }
+  .btn-ghost:hover{ border-color:var(--gold); color:var(--gold); }
+
+  footer{
+    text-align:center; padding:26px 0 40px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:11px; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--cream-dim);
+    position:relative; z-index:2;
+  }
+
+  :focus-visible{ outline:2px solid var(--gold); outline-offset:3px; }
+</style>
+</head>
+<body>
+
+<canvas id="grain-canvas"></canvas>
+<div class="light-leak"></div>
+<div class="vignette"></div>
+
+<div class="sprocket-rail" aria-hidden="true"></div>
+<div class="sprocket-rail right" aria-hidden="true"></div>
+
+<nav>
+  <div class="nav-mark">JINO <span>SKARIAH</span></div>
+  <ul class="nav-links">
+    <li><a href="#reels">Reels</a></li>
+    <li><a href="#toolkit">Toolkit</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <section class="hero">
+    <div class="corner-mark" aria-hidden="true">
+      <span class="ring"></span> Showreel
+    </div>
+    <div class="eyebrow">Motion Graphics Designer &amp; Video Editor</div>
+    <h1 class="title">CUT.<br>MOTION.<br><span class="out">RENDER.</span></h1>
+    <p class="hero-sub">Jino Jacob Skariah — I design motion graphics and edit reels that turn dense, technical subjects into content people actually finish watching.</p>
+    <div class="hero-meta">
+      <div class="meta-item"><div class="num">5</div><div class="lbl">Core Tools</div></div>
+      <div class="meta-item"><div class="num">2</div><div class="lbl">Studios</div></div>
+      <div class="meta-item"><div class="num">100+</div><div class="lbl">Reels Edited</div></div>
+    </div>
+    <div class="scroll-cue">SCROLL</div>
+  </section>
+
+  <section id="reels">
+    <div class="sec-head">
+      <h2>Selected Reels</h2>
+      <div class="tag">Reel 01 — 06</div>
+    </div>
+    <div class="reel-strip">
+      <div class="reel-card" data-always-loop style="--reel-a:#3e7c74; --reel-b:#1a1420;" tabindex="0">
+        <video src="reels/Ad_Reel-preview.mp4" muted loop playsinline autoplay preload="auto"></video>
+        <div class="reel-num">01</div>
+        <div class="reel-frame"></div>
+                <div class="reel-info">
+          <div class="reel-title">Ad Reel</div>
+          <div class="reel-cat">Brand Campaign</div>
+        </div>
+      </div>
+      <div class="reel-card" data-always-loop style="--reel-a:#e8a33d; --reel-b:#1a1420;" tabindex="0">
+        <video src="reels/2m-preview.mp4" muted loop playsinline autoplay preload="auto"></video>
+        <div class="reel-num">02</div>
+        <div class="reel-frame"></div>
+                <div class="reel-info">
+          <div class="reel-title">Studio Behind-the-Scenes</div>
+          <div class="reel-cat">BTS / Vlog</div>
+        </div>
+      </div>
+      <div class="reel-card" data-always-loop style="--reel-a:#5c4a6e; --reel-b:#0d0a0f;" tabindex="0">
+        <video src="reels/LOGO-01-preview.mp4" muted loop playsinline autoplay preload="auto"></video>
+        <div class="reel-num">03</div>
+        <div class="reel-frame"></div>
+                <div class="reel-info">
+          <div class="reel-title">Logo Reveal</div>
+          <div class="reel-cat">Motion Graphics</div>
+        </div>
+      </div>
+      <div class="reel-card" data-always-loop style="--reel-a:#3e7c74; --reel-b:#0d0a0f;" tabindex="0">
+        <video src="reels/tobacco-preview.mp4" muted loop playsinline autoplay preload="auto"></video>
+        <div class="reel-num">04</div>
+        <div class="reel-frame"></div>
+                <div class="reel-info">
+          <div class="reel-title">Tobacco Awareness</div>
+          <div class="reel-cat">Informative / Captioned</div>
+        </div>
+      </div>
+      <div class="reel-card landscape" data-always-loop tabindex="0">
+        <video src="reels/podcast-preview.mp4" muted loop playsinline autoplay preload="auto"></video>
+        <div class="reel-frame"></div>
+        <div class="reel-info">
+          <div class="reel-title">Podcast</div>
+          <div class="reel-cat">Captioned Series</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="toolkit">
+    <div class="sec-head">
+      <h2>Toolkit</h2>
+      <div class="tag">Software</div>
+    </div>
+    <div class="tool-grid">
+      <div class="tool-card">
+        <div class="tool-badge" style="--badge:#00005b;">Pr</div>
+        <div class="tool-name">Premiere Pro</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-badge" style="--badge:#331a66;">Ae</div>
+        <div class="tool-name">After Effects</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-badge" style="--badge:#001e36;">Ps</div>
+        <div class="tool-name">Photoshop</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-badge" style="--badge:#0d5c63;">Mb</div>
+        <div class="tool-name">Maya</div>
+      </div>
+      <div class="tool-card">
+        <div class="tool-badge" style="--badge:#4a1d00;">Ai</div>
+        <div class="tool-name">Illustrator</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="sec-head">
+      <h2>Experience</h2>
+      <div class="tag">Motion &amp; Edit</div>
+    </div>
+    <div class="timeline">
+
+      <div class="t-row">
+        <div class="t-year">Current</div>
+        <div class="t-dot" aria-hidden="true"></div>
+        <div>
+          <div class="t-role">Motion Graphics Designer &amp; Video Editor <span class="t-org">@ Ezi Nurse</span></div>
+          <div class="t-desc">Design and animate motion graphics for nursing education content, translating clinical concepts into clear, visual explainers. Edit training reels and short-form videos end-to-end, from raw footage to final export with captions and sound design.</div>
+          <div class="t-tags"><span>After Effects</span><span>Premiere Pro</span><span>Explainer Animation</span></div>
+        </div>
+      </div>
+
+      <div class="t-row">
+        <div class="t-year">Prior</div>
+        <div class="t-dot" aria-hidden="true"></div>
+        <div>
+          <div class="t-role">Motion Graphics Designer &amp; Video Editor <span class="t-org">@ Education Today</span></div>
+          <div class="t-desc">Created animated graphics and edited educational videos for a broad student audience, balancing fast turnaround with clean, easy-to-follow visual storytelling. Handled illustration, layout, and edit in a single pipeline.</div>
+          <div class="t-tags"><span>Illustrator</span><span>After Effects</span><span>Video Editing</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <h2>Let's cut<br>something <span class="accent">good.</span></h2>
+    <p class="contact-sub">Open for brand partnerships, creator collabs, and full-time roles.</p>
+    <div class="cta-row">
+      <a class="btn btn-primary" href="mailto:jinojacob89@gmail.com">Email Me</a>
+      <a class="btn btn-ghost" href="#reels">See More Reels</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>© 2026 Jino Jacob Skariah — Edited frame by frame</footer>
+
+<script>
+  // Ambient film-grain animation on canvas
+  const canvas = document.getElementById('grain-canvas');
+  const ctx = canvas.getContext('2d');
+  let w, h;
+
+  function resize(){
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function drawGrain(){
+    const imageData = ctx.createImageData(w, h);
+    const buffer = new Uint32Array(imageData.data.buffer);
+    for (let i = 0; i < buffer.length; i++){
+      const shade = Math.random() * 255 | 0;
+      buffer[i] = (255 << 24) | (shade << 16) | (shade << 8) | shade;
+    }
+    ctx.putImageData(imageData, 0, 0);
+  }
+
+  if(!prefersReduced){
+    let last = 0;
+    function loop(t){
+      if(t - last > 90){ drawGrain(); last = t; }
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  } else {
+    drawGrain();
+  }
+
+  // Scroll reveal for timeline rows and reel cards
+  const revealTargets = document.querySelectorAll('.t-row, .reel-card');
+  revealTargets.forEach(el => { el.style.opacity = 0; el.style.transform += ' translateY(16px)'; el.style.transition = 'opacity .6s ease, transform .6s ease'; });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.style.opacity = 1;
+        entry.target.style.transform = entry.target.style.transform.replace(' translateY(16px)', ' translateY(0)');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15 });
+
+  revealTargets.forEach(el => io.observe(el));
+
+  // Reel video playback: hover to preview, click to watch full
+  document.querySelectorAll('.reel-card').forEach(card => {
+    const vid = card.querySelector('video');
+    if(!vid) return;
+
+    if(card.hasAttribute('data-always-loop')){
+      vid.play().catch(()=>{});
+      return; // ambient gif-style loop, no hover/click behavior
+    }
+
+    card.addEventListener('mouseenter', () => { vid.currentTime = 0; vid.play().catch(()=>{}); });
+    card.addEventListener('mouseleave', () => vid.pause());
+    card.addEventListener('touchstart', () => vid.play().catch(()=>{}), { passive:true });
+
+    card.addEventListener('click', () => {
+      if(vid.requestFullscreen){ vid.requestFullscreen(); }
+      vid.muted = false;
+      vid.controls = true;
+      vid.play().catch(()=>{});
+    });
+    card.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){ card.click(); }
+    });
+  });
+</script>
+
+</body>
+</html>
